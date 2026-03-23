@@ -1,0 +1,16 @@
+# Binaries
+quant_engine
+*.o
+*.so
+*.tar.gz
+
+# Libraries & Data
+ta-lib/
+stargate_audit.csv
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Local Snapshots
+stargate_snapshot_*
