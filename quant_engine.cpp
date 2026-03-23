@@ -56,25 +56,21 @@ void process(const std::string& ticker) {
 
         if (close.size() >= 30) {
             int b, n;
-            double rsi, atr, sma5, sma20;
+            double rsi, atr, sma20;
             std::vector<double> buf(close.size());
             
             TA_RSI(0, close.size()-1, close.data(), 14, &b, &n, buf.data()); rsi = buf[n-1];
             TA_ATR(0, close.size()-1, high.data(), low.data(), close.data(), 14, &b, &n, buf.data()); atr = buf[n-1];
-            TA_SMA(0, close.size()-1, close.data(), 5, &b, &n, buf.data()); sma5 = buf[n-1];
             TA_SMA(0, close.size()-1, close.data(), 20, &b, &n, buf.data()); sma20 = buf[n-1];
 
-            double sentiment = (rsi * 0.4) + (sma5 > sma20 ? 30 : 0);
-            std::string posture = (sentiment > 50) ? "STRONG" : (sentiment > 40 ? "NEUTRAL" : "WEAK");
+            std::string posture = (rsi > 60) ? "BULLISH" : (rsi < 40 ? "BEARISH" : "NEUTRAL");
 
             std::lock_guard<std::mutex> lock(output_mutex);
-            // 1. Terminal Output
             std::cout << "| " << std::left << std::setw(6) << ticker 
-                      << " | RSI: " << std::fixed << std::setprecision(1) << rsi 
-                      << " | ATR: " << std::setw(5) << atr 
-                      << " | " << posture << " |" << std::endl;
+                      << " | LAST: $" << std::right << std::setw(8) << std::fixed << std::setprecision(2) << close.back()
+                      << " | ATR: " << std::setw(5) << std::setprecision(2) << atr 
+                      << " | POSTURE: " << std::setw(8) << posture << " |" << std::endl;
 
-            // 2. Audit CSV Output (for Python Heatmap)
             std::ofstream audit("stargate_audit.csv", std::ios::app);
             audit << ticker << "," << rsi << "," << atr << "," << close.back() << ",2026-03-23\n";
         }
@@ -84,18 +80,20 @@ void process(const std::string& ticker) {
 }
 
 int main() {
-    std::vector<std::string> watch = {"^RUT", "^IXIC", "IBM", "^GSPC", "NVDA"};
-    // Prepare CSV with Headers
+    // Watchlist updated with Chevron (CVX)
+    std::vector<std::string> watch = {"^RUT", "^IXIC", "IBM", "NVDA", "CVX", "JPM"};
     std::ofstream audit("stargate_audit.csv");
     audit << "Ticker,RSI,ATR,Price,Timestamp\n";
     audit.close();
 
     TA_Initialize();
     curl_global_init(CURL_GLOBAL_ALL);
-    std::cout << "\nSTARGATE V3 | MAR 23 EOD ENGINE" << std::endl;
+    std::cout << "\nSTARGATE V3 | SECTOR ROTATION AUDIT (CVX INCLUDED)" << std::endl;
+    std::cout << "------------------------------------------------------------" << std::endl;
     std::vector<std::thread> th;
     for(auto& t : watch) th.emplace_back(process, t);
     for(auto& t : th) t.join();
+    std::cout << "------------------------------------------------------------" << std::endl;
     curl_global_cleanup();
     TA_Shutdown(); 
     return 0;
