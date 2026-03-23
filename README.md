@@ -11,6 +11,8 @@ The **Stargate Cluster** is a high-performance, multi-threaded C++ engine design
 
 ## Visual Analytics
 ![Stargate EOD Analysis](stargate_eod_report.png)
+![Risk Heatmap](stargate_heatmap.png)
+![Risk Heatmap](stargate_heatmap.png)
 
 ## Key Technical Indicators (Mar 23, 2026)
 As of the March 23, 2026 session, the engine identified a significant **Divergence Alpha**:
