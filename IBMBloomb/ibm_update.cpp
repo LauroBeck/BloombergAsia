@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdio>
 #include "telemetry.h"
-#include "synergy.h"
 
 int main() {
     printf("\033[1;34m[IBM INTEL - STARGATE CLUSTER - MAR 26, 2026 - CLOSE]\033[0m\n");
@@ -10,13 +9,11 @@ int main() {
     
     printf("\033[1;32m[QUANTUM MILESTONE]\033[0m KCuF3 Magnetic Simulation: SUCCESS\n");
     printf("Hardware: IBM Quantum Heron (133-Qubit Processor)\n");
-    printf("Execution: 50-Qubit precision circuit matching Oak Ridge Lab data.\n");
-    printf("Note: Tunable couplers enabled the sub-1nm logic validation.\n\n");
+    printf("Execution: 50-Qubit High-Fidelity Circuit Milestone\n");
+    printf("Result: Matches Oak Ridge Lab Data; Proves Sub-1nm Logic Utility\n\n");
     
-    auto report = AnalystModel::get_projection();
-    printf("\033[1;35m[SYNERGY]\033[0m Confluent $11B Integration: LIVE\n");
-    printf("Projected Q2 Software ARR: $%0.2fB\n", report.net_arr);
-    printf("RBC Bull Case Conviction: $%0.2f\n", report.rbc_bull_target);
+    printf("\033[1;35m[MARKET TRACE]\033[0m\n");
+    printf("JPMorgan: $317 (Neutral) | BofA: $340 (Buy) | RBC: $361 (Outperform)\n");
     
     return 0;
 }
